@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#FFFFFF">
+<title>Fecomércio Patrimônio — Gestão de demandas</title>
+<meta name="description" content="Plataforma de gestão de demandas por setor da Fecomércio PE: financeiro, RH, almoxarifado, patrimônio e o que mais for cadastrado.">
+<link rel="icon" href="assets/logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/styles.css">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html5-qrcode/2.3.8/html5-qrcode.min.js"></script>
+</head>
+<body>
+
+<!-- ========================= ACESSO ========================= -->
+<div id="login">
+  <div class="portal">
+    <img class="logo" src="assets/logo.png" alt="Fecomércio PE">
+    <h1>Patrimônio</h1>
+    <p class="sub" id="subLogin">Gestão de demandas por setor</p>
+    <div class="cartao">
+      <div id="msgLogin"></div>
+      <div id="areaLogin"><p class="legenda">Conectando ao sistema…</p></div>
+    </div>
+    <p class="rodape-login">Acesso restrito · Fecomércio PE</p>
+  </div>
+</div>
+
+<!-- ========================= PLATAFORMA ========================= -->
+<div id="app" style="display:none">
+  <div class="fixo">
+    <header class="topo">
+      <div class="topo-in">
+        <img class="logo" src="assets/logo.png" alt="Fecomércio PE">
+        <div class="selo-sis">Patrimônio<span id="rotuloUnidade">Gestão de demandas</span></div>
+        <div class="topo-dir">
+          <div class="usuario">
+            <b id="quemSou"></b>
+            <span class="papel" id="meuPapel"></span>
+          </div>
+          <button class="btn-sair" data-acao="sair">Sair</button>
+        </div>
+      </div>
+    </header>
+    <nav class="abas" aria-label="Seções da plataforma"><div class="abas-in" id="abas"></div></nav>
+  </div>
+
+  <main id="tela"><div class="carregando">Carregando suas demandas…</div></main>
+</div>
+
+<div id="areaImpressao"></div>
+<div id="avisos"></div>
+<div id="modais"></div>
+
+<script src="assets/config.js"></script>
+<script src="assets/nucleo.js"></script>
+<script src="assets/demandas.js"></script>
+<script src="assets/patrimonio.js"></script>
+<script src="assets/relatorios.js"></script>
+<script src="assets/admin.js"></script>
+<script src="assets/acoes.js"></script>
+</body>
+</html>
