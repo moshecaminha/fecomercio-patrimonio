@@ -1,0 +1,232 @@
+/* ============================================================================
+   FECOMÉRCIO PATRIMÔNIO — camada de uso em celular e tablet
+   Carregada DEPOIS de styles.css, então tudo aqui vence por cascata.
+
+   Premissa: a baixa de estoque e a movimentação de patrimônio acontecem em pé,
+   no corredor, com uma mão segurando a caixa. Alvos grandes, leitura sem zoom,
+   nada de rolagem lateral.
+   ========================================================================== */
+
+/* ------------------------------------------------- REGRAS GERAIS DE TOQUE - */
+@media (max-width: 900px){
+  /* iOS dá zoom automático em campo com fonte < 16px. Isso desalinha a tela
+     inteira no meio de uma leitura de etiqueta. */
+  input, select, textarea{ font-size: 16px !important; }
+
+  /* Alvo mínimo confortável para o polegar. */
+  .btn{ min-height: 46px; padding: 12px 18px; }
+  .btn.mini{ min-height: 38px; padding: 9px 13px; font-size: 11px; }
+  .btn-sair{ min-height: 40px; }
+  .aba{ padding: 14px 13px 11px; font-size: 12.5px; }
+  .marcador{ min-height: 42px; }
+  .marcador input{ width: 21px; height: 21px; }
+
+  body{ -webkit-tap-highlight-color: rgba(0,74,141,.12); }
+  main{ padding: 16px 12px calc(64px + env(safe-area-inset-bottom)); }
+  .fixo{ padding-top: env(safe-area-inset-top); }
+}
+
+/* --------------------------------------------------------- CABEÇALHO ------ */
+@media (max-width: 700px){
+  .topo-in{ padding: 9px 12px; gap: 10px; }
+  .topo-in .logo{ height: 27px; }
+  .selo-sis{ font-size: 9px; padding-left: 10px; }
+  .selo-sis span{ display: none; }          /* o subtítulo não cabe e não faz falta */
+  .usuario b{ max-width: 104px; font-size: 12px; }
+  .usuario .papel{ display: none; }
+  .abas-in{ padding: 0 6px; }
+
+  .titulo-tela{ gap: 10px; margin-bottom: 14px; }
+  .titulo-tela h2{ font-size: 20px; }
+  .titulo-tela .acoes{ margin-left: 0; width: 100%; }
+  .titulo-tela .acoes .btn{ flex: 1; }      /* botões dividem a largura, sem sobra */
+
+  .bloco{ border-radius: 12px; margin-bottom: 14px; }
+  .bloco > h3{ padding: 13px 14px; font-size: 11.5px; }
+  .corpo{ padding: 14px; }
+  .kpis{ gap: 9px; }
+  .kpi{ padding: 13px 14px; }
+  .kpi .val{ font-size: 26px; }
+}
+
+/* ------------------------------------- TABELA VIRA CARTÃO (peça central) -- */
+/* Em telas estreitas, tabela com 6 colunas obriga a arrastar de lado e ler
+   número fora do contexto do rótulo. Cada linha vira um cartão com os rótulos
+   à esquerda e os valores à direita. Os rótulos vêm de mobile.js. */
+@media (max-width: 760px){
+  .rolagem{ overflow: visible; }
+  .tabela{ display: block; font-size: 14px; }
+  .tabela thead{ display: none; }
+  .tabela tbody, .tabela tr, .tabela td{ display: block; width: auto; }
+
+  .tabela tbody tr{
+    border: 1px solid var(--linha);
+    border-radius: 10px;
+    margin: 10px 12px;
+    padding: 4px 0;
+    background: var(--branco);
+  }
+  .tabela tbody tr:hover{ background: var(--branco); }
+  .tabela tbody tr:first-child{ margin-top: 12px; }
+
+  .tabela td{
+    border: 0;
+    padding: 8px 13px;
+    text-align: left !important;
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 14px;
+  }
+  .tabela td + td{ border-top: 1px dashed var(--linha); }
+  .tabela td::before{
+    content: attr(data-rotulo);
+    font-family: 'Archivo';
+    font-weight: 600;
+    font-size: 9.5px;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: var(--mute);
+    flex: 0 0 auto;
+    padding-top: 2px;
+  }
+  .tabela td > *{ text-align: right; }
+  .tabela td.vazio, .tabela td[colspan]{ display: block; text-align: center !important; }
+  .tabela td.vazio::before, .tabela td[colspan]::before{ display: none; }
+
+  /* A primeira coluna é a identidade da linha: vira título do cartão. */
+  .tabela tbody td:first-child{
+    background: var(--nevoa);
+    border-radius: 9px 9px 0 0;
+    margin: -4px 0 0;
+    padding: 11px 13px;
+    font-weight: 600;
+  }
+  .tabela tbody td:first-child::before{ display: none; }
+  .tabela tbody td:first-child > *{ text-align: left; }
+  /* célula de ações sem rótulo, botões lado a lado ocupando a largura */
+  .tabela td.acoes-cel{ display: flex; gap: 8px; padding-top: 4px; }
+  .tabela td.acoes-cel::before{ display: none; }
+  .tabela td.acoes-cel .btn{ flex: 1; }
+}
+
+/* Matriz de cruzamento continua tabela de verdade — vira cartão não ajuda. */
+@media (max-width: 760px){
+  .matriz{ display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  .matriz .tabela{ display: table; min-width: 480px; font-size: 12.5px; }
+  .matriz .tabela thead{ display: table-header-group; }
+  .matriz .tabela tbody{ display: table-row-group; }
+  .matriz .tabela tr{ display: table-row; margin: 0; border: 0; }
+  .matriz .tabela td, .matriz .tabela th{ display: table-cell; padding: 8px 10px; border-bottom: 1px solid var(--linha); }
+  .matriz .tabela td + td{ border-top: 0; }
+  .matriz .tabela td::before{ display: none; }
+  .matriz .tabela tbody td:first-child{ background: var(--nevoa); margin: 0; border-radius: 0; position: sticky; left: 0; }
+  .matriz .tabela td.dir{ text-align: right !important; }
+  .matriz .tabela td > *{ text-align: inherit; }
+}
+
+/* ------------------------------------------ LEITOR DE ETIQUETA NO CELULAR - */
+@media (max-width: 760px){
+  /* Fica grudado no topo: rolar a lista de itens não tira o leitor da tela. */
+  .leitor{
+    position: sticky;
+    top: 0;
+    z-index: 30;
+    border-radius: 12px;
+    padding: 14px;
+    box-shadow: 0 10px 24px -14px rgba(0,42,80,.7);
+  }
+  .leitor .linha-bip{ flex-wrap: wrap; }
+  .leitor input{
+    flex: 1 1 100%;
+    min-height: 54px;
+    font-size: 21px !important;
+    text-align: center;
+  }
+  .leitor .btn{ flex: 1; min-height: 48px; }
+  .leitor .dica{ display: none; }
+  #cam video{ width: 100% !important; height: auto !important; }
+}
+
+/* --------------------------------------------------------- FORMULÁRIOS ---- */
+@media (max-width: 760px){
+  .filtros{
+    grid-template-columns: 1fr 1fr;
+    padding: 12px;
+    gap: 9px;
+  }
+  .filtros > div:has(.marcador), .filtros .linha-toda{ grid-column: 1 / -1; }
+  .filtros label.campo > span{ font-size: 9px; }
+  .linha-campos.c2, .linha-campos.c3{ grid-template-columns: 1fr; }
+  label.campo{ margin-bottom: 12px; }
+  .btn-linha{ gap: 8px; }
+  .btn-linha .btn{ flex: 1 1 auto; }
+}
+
+/* Modal: folha que sobe de baixo, com o rodapé de ações sempre alcançável. */
+@media (max-width: 719px){
+  .modal{ max-height: 94dvh; border-radius: 16px 16px 0 0; }
+  .modal-cab{ padding: 15px 16px; }
+  .modal-cab h3{ font-size: 15px; }
+  .modal-cab .x{ font-size: 30px; padding: 0 8px; min-height: 44px; }
+  .modal-corpo{ padding: 16px; }
+  .modal-pe{
+    padding: 12px 16px calc(12px + env(safe-area-inset-bottom));
+    gap: 8px;
+  }
+  .modal-pe .btn{ flex: 1 1 46%; min-height: 48px; }
+  /* Confirmar movimentação é a ação mais usada: ocupa a linha inteira. */
+  .modal-pe .btn:last-child{ flex: 1 1 100%; order: -1; }
+}
+
+/* ---------------------------------------------------------- CONTEÚDO ------ */
+@media (max-width: 700px){
+  .ficha-cab{ padding: 14px; }
+  .ficha-cab h2{ font-size: 18px; }
+  .ficha-meta{ grid-template-columns: 1fr 1fr; padding: 14px; gap: 12px 16px; }
+  .campos-dados{ grid-template-columns: 1fr; }
+  .cartao-dem{ padding: 13px 14px; }
+  .cartao-dem .l2{ font-size: 14.5px; }
+  .cartao-dem .l3{ gap: 5px 12px; font-size: 11px; }
+  .historico li{ padding: 0 14px 16px 40px; }
+  .etiquetas{ grid-template-columns: 1fr 1fr; gap: 10px; padding: 12px; }
+  #avisos{ bottom: calc(14px + env(safe-area-inset-bottom)); width: calc(100% - 24px); }
+  .aviso{ font-size: 14px; }
+}
+
+/* Tablet em retrato: aproveita a largura sem esticar demais a linha de texto. */
+@media (min-width: 701px) and (max-width: 1024px){
+  main{ padding: 20px 20px 80px; }
+  .kpis{ grid-template-columns: repeat(4, 1fr); }
+  .ficha-meta{ grid-template-columns: repeat(3, 1fr); }
+  .etiquetas{ grid-template-columns: repeat(3, 1fr); }
+}
+
+/* Telefone pequeno (≤360px): o que dá para apertar sem quebrar. */
+@media (max-width: 360px){
+  .kpis{ grid-template-columns: 1fr 1fr; }
+  .kpi .val{ font-size: 23px; }
+  .titulo-tela h2{ font-size: 18px; }
+  .topo-in .logo{ height: 24px; }
+  .selo-sis{ display: none; }
+  .etiquetas{ grid-template-columns: 1fr; }
+}
+
+/* Celular deitado: cabeçalho fixo comeria metade da tela. */
+@media (max-height: 460px) and (orientation: landscape){
+  .fixo{ position: static; }
+  .leitor{ position: static; }
+}
+
+/* ------------------------------------------------------------ CONFORTO ---- */
+@media (hover: none){
+  .cartao-dem:active{ background: var(--azul-veu); }
+  .tabela tbody tr:active{ background: var(--nevoa); }
+  .btn:active{ transform: scale(.985); }
+}
+@media print{
+  .leitor{ display: none !important; }
+  .tabela, .tabela thead, .tabela tbody, .tabela tr, .tabela td{ display: revert; }
+  .tabela thead{ display: table-header-group; }
+  .tabela td::before{ display: none; }
+}
